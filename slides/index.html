@@ -1,49 +1,464 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/theme/black.css" />
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css" />
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.type = "text/css";
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? "css/print/pdf.css"
+        : "css/print/paper.css";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <!-- Chapter1 -->
+          <section>
+            <h1>Introduction</h1>
+            <p>Simple alternative to J2EE since 2003</p>
+            <p>Typical webapp based on Spring MVC</p>
+            <table>
+              <tr>
+                <td style="background-color: green">presentation</td>
+                <td style="background-color: darkred" rowspan="3">
+                  domain objects <br />POJOs
+                </td>
+              </tr>
+              <tr>
+                <td style="background-color: blue">logic</td>
+              </tr>
+              <tr>
+                <td style="background-color: darkgoldenrod">persistence</td>
+              </tr>
+            </table>
+          </section>
+          <section
+            data-background-iframe="https://spring.io"
+            data-background-interactive
+          ></section>
+          <section>
+            <h2>Spring Framework Stacks</h2>
+            <img width="500" data-src="screenshots/SpringFramework.png" />
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              - OpenSource application framework for Java
+              - Aus Frustration über die (oft unnötige) Komplexität bestehender
+              J2EE Architekturen (mit EJBs und Application-Servern)
+              - Lightweight alternative to J2EE mananges POJOs as Spring Beans
+              - Uses Inversion of Control (IoC) to connect and configure dependent Beans
+              - Uses Aspect oriented Programming (AoP) for Cross-Cutting Concerns
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              - Spring can effectively organize your middle tier objects.
+              - Spring can eliminate the proliferation of Singletons seen on many projects.
+              - Spring eliminates the need to use a variety of custom properties file formats.
+              - Spring facilitates good programming practice by reducing the cost of
+              programming to interfaces, rather than classes, almost to zero.
+              - Spring is designed so that applications built with it depend on as few of its APIs
+              as possible.
+              - Applications built using Spring are very easy to test.
+              - Spring helps you solve problems with the most lightweight possible infrastructure.
+              - Spring provides a consistent, simple programming model in many areas,
+              making it ideal architectural "glue."
+            </script>
+          </section>
+        </section>
+        <section>
+          <!-- Chapter 2 -->
+          <section data-markdown>
+            <script type="text/template">
+              ## Dependency Injection
+              Hollywood-Prinzip: „Don't call us, we call you“
+                - Klasse bekommt benötigte Komponenten von außen „injiziert“
+                - Klasse muss nur wissen was sie braucht, nicht wie sie es bekommt
+                - DI Container garantiert, dass Abhängigkeiten gesetzt werden
+                - entkoppelt Klasse von der Laufzeitumgebung
+            </script>
+          </section>
+          <section>
+            <h2>DJ Methods</h2>
+            <ul>
+              <li class="fragment">Construktor Injection</li>
+              <li class="fragment">Field / Setter Injection</li>
+            </ul>
+          </section>
 
-		<script src="js/reveal.js"></script>
+          <section>
+            <h2>Fragment Styles</h2>
+            <p>There's different types of fragments, like:</p>
+            <p class="fragment grow">grow</p>
+            <p class="fragment shrink">shrink</p>
+            <p class="fragment fade-out">fade-out</p>
+            <p>
+              <span style="display: inline-block;" class="fragment fade-right"
+                >fade-right,
+              </span>
+              <span style="display: inline-block;" class="fragment fade-up"
+                >up,
+              </span>
+              <span style="display: inline-block;" class="fragment fade-down"
+                >down,
+              </span>
+              <span style="display: inline-block;" class="fragment fade-left"
+                >left</span
+              >
+            </p>
+            <p class="fragment fade-in-then-out">fade-in-then-out</p>
+            <p class="fragment fade-in-then-semi-out">fade-in-then-semi-out</p>
+            <p>
+              Highlight <span class="fragment highlight-red">red</span>
+              <span class="fragment highlight-blue">blue</span>
+              <span class="fragment highlight-green">green</span>
+            </p>
+          </section>
+        </section>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true }
-				]
-			});
-		</script>
-	</body>
+        <section>
+          <!-- Chapter 3 -->
+          <section data-markdown>
+            <script type="text/template">
+              ## Spring Boot
+            </script>
+          </section>
+          <section
+            data-background-iframe="https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-system-requirements.html"
+          ></section>
+          <section data-markdown>
+            <script type="text/template">
+              ## RestController
+              ```java
+              @RestController
+              class RootContoller {
+
+                @RequestMapping("/")
+                String home() {
+                  "Hello World!"
+                }
+
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## @Mapping Types
+
+              - GetMapping
+              - PostMapping
+              - ..
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## [Exercise 1.1](exercises/ex-1.1/ex-1.1.md) Simplest way to run a spring boot app
+              <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started-installing-spring-boot.html">Install Spring CLI</a>
+              ```bash
+              spring run exercises/ex-1.1/app.groovy
+              ```
+
+              [Samples](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-cli/samples)
+
+              ```bash
+               spring run https://raw.githubusercontent.com/spring-projects/spring-boot/master/spring-boot-project/spring-boot-cli/samples/http.groovy
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Initialize Project:
+              https://start.spring.io/
+              <img width="600px" src="screenshots\SpringInitializr.png" alt="SpringInitializr">
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Import into STS:
+              - File -> Import... -> Maven -> Existing Maven Projects
+              <img width="600px" src="screenshots\mavenimport.png" alt="SpringInitializr">
+              - Look at the pom.xml file
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## @SpringBootApplication
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## @Component
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template"></script>
+            ## @Services
+          </section>
+          <section data-markdown>
+            <script type="text/template"></script>
+            ## @Autowired
+          </section>
+          <section data-markdown>
+            <script type="text/template"></script>
+            ## Autowired
+          </section>
+        </section>
+
+        <section>
+          <!-- Chapter 4 -->
+          <section data-markdown>
+            <script type="text/template">
+              ## Rest + Postman
+            </script>
+          </section>
+        </section>
+        <section>
+          <!-- Chapter 5 -->
+          <section data-markdown>
+            <script type="text/template">
+              ## Externalized Configuration
+              Same application code in different environments.
+              <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html">DOCS</a>
+              <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html">common-application-properties</a>
+              <ul>
+                <li class="fragment">Properties files</li>
+                <li class="fragment">YAML files</li>
+                <li class="fragment">Environment variables</li>
+                <li class="fragment">Command-line arguments</li>
+              </ul>
+            </script>
+          </section>
+          <section>
+            <h2>Order of property sources</h2>
+            <img data-src="screenshots/ExternalizedConfiguration.png" />
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### @Value
+              ```
+              import org.springframework.stereotype.*;
+              import org.springframework.beans.factory.annotation.*;
+
+              @Component
+              public class MyBean {
+
+                  @Value("${name}")
+                  private String name;
+
+                  // ...
+
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### @ConfigurationProperties
+
+              ```
+              @ConfigurationProperties(prefix="my")
+              public class Config {
+
+                private List<String> servers = new ArrayList<String>();
+
+                public List<String> getServers() {
+                  return this.servers;
+                }
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Profiles
+
+              ```
+              server:
+                address: 192.168.1.100
+              ---
+              spring:
+                profiles: development
+              server:
+                address: 127.0.0.1
+              ---
+              spring:
+                profiles: production & eu-central
+              server:
+                address: 192.168.1.120
+              ```
+            </script>
+          </section>
+          <section data-markdown style=" font-size: 0.7em !important;">
+            <script type="text/template">
+              ### ConfigurationProperties usage
+
+              ```
+              @Service
+              public class MyService {
+
+                private final AcmeProperties properties;
+
+                @Autowired
+                public MyService(AcmeProperties properties) {
+                    this.properties = properties;
+                }
+
+                @PostConstruct
+                public void openConnection() {
+                  Server server = new Server(this.properties.getRemoteAddress());
+                  // ...
+                }
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown style=" font-size: 0.6em !important;">
+            <script type="text/template">
+              ### JSR 303 validation
+
+              ```
+              @ConfigurationProperties(prefix="acme")
+              @Validated
+              public class AcmeProperties {
+
+                @NotNull
+                private InetAddress remoteAddress;
+
+                @Valid
+                private final Security security = new Security();
+
+                // ... getters and setters
+
+                public static class Security {
+
+                  @NotEmpty
+                  public String username;
+
+                  // ... getters and setters
+
+                }
+
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              #### Relaxed Binding
+              - Binding Environment properties to @ConfigurationProperties
+              - No exact match between the Environment property name and the bean property name needed.
+                (for example, PORT binds to port)
+              Example: property firstName
+            </script>
+          </section>
+          <section>
+            <h3>Relaxed Binding</h3>
+            <img data-src="screenshots/relaxedbinding.png" />
+          </section>
+          <section>
+            <h3>Relaxed Binding Rules</h3>
+            <img data-src="screenshots/relaxedbindingrules.png" />
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              #### @ConfigurationProperties vs. @Value
+              <table>
+                <tr><th>Feature</th><th>@Configuration Properties</th><th>@Value</th></tr>
+                <tr><td>Relaxed binding</td><td>Yes</td><td>No</td></tr>
+                <tr><td>Meta-data support</td><td>Yes</td><td>No</td></tr>
+                <tr><td>SpEL evaluation</td><td>No</td><td>Yes</td></tr>
+              </table>
+              <aside class="notes"><p>SpEL = Spring Expression Language</p><p>Meta-data: json generated from ConfigurationProperties during compiletime.</p></aside>
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+                ### Summary
+                <ul>
+                  <li>Merging complext types (Lists, Maps)</li>
+                  <li>Do not combine profile-specific YAML files and multiple YAML documents</li>
+                  <li>Configuration for components should be a POJO annotated with @ConfigurationProperties</li>
+                  <li>@Value should not be used with environment variables, because no relaxed binding.</li>
+                </ul>
+                <aside class="notes">
+                "We recommend that you don’t combine profile-specific YAML files and multiple YAML documents and stick to using only one of them."
+                If you define a set of configuration keys for your own components, we recommend you group them in a POJO annotated with @ConfigurationProperties.
+                You should also be aware that, since @Value does not support relaxed binding, it is not a good candidate if you need to provide the value by using environment variables.
+              </aside>
+            </script>
+          </section>
+        </section>
+        <section>
+          <!-- Chapter 6 -->
+          <section data-markdown>
+            <script type="text/template">
+              ## Spring Data
+            </script>
+          </section>
+        </section>
+        <section>
+          <!-- Chapter 7 -->
+          <section data-markdown>
+            <script type="text/template">
+              ## Spring Security
+            </script>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+
+        transition: "slide", // none/fade/slide/convex/concave/zoom
+        dependencies: [
+          {
+            src: "plugin/markdown/marked.js",
+            condition: function() {
+              return !!document.querySelector("[data-markdown]");
+            }
+          },
+          {
+            src: "plugin/markdown/markdown.js",
+            condition: function() {
+              return !!document.querySelector("[data-markdown]");
+            }
+          },
+          { src: "plugin/highlight/highlight.js", async: true },
+          { src: "plugin/search/search.js", async: true },
+          { src: "plugin/zoom-js/zoom.js", async: true },
+          { src: "plugin/notes/notes.js", async: true }
+        ]
+      });
+    </script>
+  </body>
 </html>
