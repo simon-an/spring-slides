@@ -27,13 +27,13 @@
       document.getElementsByTagName("head")[0].appendChild(link);
     </script>
     <script>
-      function closeAll (openDetails){
+      function closeAll(openDetails) {
         var details = document.getElementsByTagName("details");
         var len = details.length;
-        for(var i=0; i<len; i++){
-            if(details[i] != openDetails){
-                details[i].removeAttribute("open");
-            }
+        for (var i = 0; i < len; i++) {
+          if (details[i] != openDetails) {
+            details[i].removeAttribute("open");
+          }
         }
       }
     </script>
@@ -531,7 +531,8 @@
                 - Jackson: @JsonIgnoreProperties(ignoreUnknown = true)
               </script>
             </div>
-            <details><summary>Solution</summary>
+            <details
+              ><summary>Solution</summary>
               <div style="position:absolute; top:0px;">
                 <pre><code class="hljs" data-trim data-noescape style=" width:800px; max-height: 600px!important"  >
                  
@@ -677,7 +678,18 @@
           </section>
           <section data-markdown>
             <script type="text/template">
-              ### Profiles
+              #### Profiles activation
+              - application.properties: spring.profiles.active=dev,hsqldb
+              - command line: -Dspring.profiles.active=dev,hsqldb
+              #### Profile usage
+              - @Profile("production") usable with @Configuration and @Component 
+              - application-${profile}.properties
+              - @ConditionalOnProperty(prefix = "coolsafe", name = "create-demo-data", havingValue = "true")
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Profiles in yaml files
 
               ```
               server:
@@ -794,12 +806,27 @@
               </aside>
             </script>
           </section>
+
+          <section data-markdown>
+            <script type="text/template">
+              ## Exercise 4:
+              - Create a propertie file for a new profile "local"
+              - Add coolsafe.create-demo-data property
+              - Create a new Component DemoData which does the data creation initialy done by SpringBootApplication class.
+              - Set VM Argument -Dspring.profiles.active=local
+              - Play with the application settings: 
+                - override properties coolsafe.create-demo-data=false
+                - Enviroment: SPRING_APPLICATION_JSON: { "coolsafe.create-demo-data": true}
+            </script>
+          </section>
         </section>
         <section>
           <!-- Chapter 6 -->
           <section data-markdown>
             <script type="text/template">
               ## Spring Data
+              - We already used Spring Data JPA
+              
             </script>
           </section>
         </section>
