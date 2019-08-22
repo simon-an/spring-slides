@@ -26,6 +26,17 @@
         : "css/print/paper.css";
       document.getElementsByTagName("head")[0].appendChild(link);
     </script>
+    <script>
+      function closeAll (openDetails){
+        var details = document.getElementsByTagName("details");
+        var len = details.length;
+        for(var i=0; i<len; i++){
+            if(details[i] != openDetails){
+                details[i].removeAttribute("open");
+            }
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="reveal">
@@ -163,11 +174,12 @@
           </section>
           <section data-markdown>
             <script type="text/template">
-              ## @Mapping Types
-
-              - GetMapping
-              - PostMapping
-              - ..
+              ## Exercise 1 Setup Spring Boot
+              * 1.1 Simplest way to run a spring boot app with spring CLI
+              * 1.2 Initialize Project
+              * 1.3 Import project to STS
+              * 1.4 Import project to VS-Code
+              * 1.5 Build and run the project from CLI and IDE
             </script>
           </section>
           <section data-markdown>
@@ -187,14 +199,14 @@
           </section>
           <section data-markdown>
             <script type="text/template">
-              ## Initialize Project:
+              ## 1.2 Initialize Project:
               https://start.spring.io/
               <img width="600px" src="screenshots\SpringInitializr.png" alt="SpringInitializr">
             </script>
           </section>
           <section data-markdown>
             <script type="text/template">
-              ## Import into STS:
+              ## 1.3 Import into STS:
               - File -> Import... -> Maven -> Existing Maven Projects
               <img width="600px" src="screenshots\mavenimport.png" alt="SpringInitializr">
               - Look at the pom.xml file
@@ -202,25 +214,127 @@
           </section>
           <section data-markdown>
             <script type="text/template">
-              ## @SpringBootApplication
+              ## 1.4 Import project to VS-Code
             </script>
           </section>
           <section data-markdown>
             <script type="text/template">
-              ## @Component
+              ## 1.5 Build and run the project from CLI and IDE
+
+              ```bash
+              java -version
+              mvn -v
+              mvn dependency:tree
+              mvn spring-boot:run
+              mvn package
+              java -jar target\api-0.0.1-SNAPSHOT.jar
+              ```
             </script>
           </section>
           <section data-markdown>
-            <script type="text/template"></script>
-            ## @Services
+            <script type="text/template">
+              ## Offtopic:
+              /profile endpoint supplied by spring-data-rest:
+              https://github.com/spring-projects/spring-boot/issues/1718
+              https://tools.ietf.org/html/rfc6906
+
+              HATEOAS: Hypermedia As The Engine Of Application State
+            </script>
           </section>
           <section data-markdown>
-            <script type="text/template"></script>
-            ## @Autowired
+            <script type="text/template">
+              ### @SpringBootApplication Class
+
+              ```
+              package de.coolsafe.api;
+
+              import org.springframework.boot.SpringApplication;
+              import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+              // -> More annotations will end up here during development
+              @SpringBootApplication
+              public class ApiApplication {
+
+                public static void main(String[] args) {
+                  SpringApplication.run(ApiApplication.class, args);
+                }
+
+              }
+
+              ```
+            </script>
           </section>
           <section data-markdown>
-            <script type="text/template"></script>
-            ## Autowired
+            <script type="text/template">
+              ### @SpringBootApplication features
+
+              - @EnableAutoConfiguration: enable Spring Boot’s auto-configuration mechanism
+              - @ComponentScan: enable @Component scan on the package where the application is located (see the best practices)
+              - @Configuration: allow to register extra beans in the context or import additional configuration classes
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### AutoConfiguration
+
+              "Auto-configuration Spring Boot auto-configuration attempts to
+              automatically configure your Spring application based on the jar
+              dependencies that you have added."
+
+              E.G. Disable DataSourceAutoConfiguration
+              ```java
+              @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+              ```
+            </script>
+            <aside class="notes">
+              For example, if HSQLDB is on your classpath, and you have not
+              manually configured any database connection beans, then Spring
+              Boot auto-configures an in-memory database. You need to opt-in to
+              auto-configuration by adding the @EnableAutoConfiguration or
+              @SpringBootApplication annotations to one of your @Configuration
+              classes.
+            </aside>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Config without ComponentScan
+
+              ```java
+              @Configuration
+              @EnableAutoConfiguration
+              @Import({ MyConfig.class, MyAnotherConfig.class })
+              public class Application {
+
+                public static void main(String[] args) {
+                    SpringApplication.run(Application.class, args);
+                }
+
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### @Project Structure
+              <img height="500" data-src="screenshots/StructuringYourCode.png" />
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Spring Bean Types
+              - @Component is a generic stereotype for any Spring-managed component
+              - @Service annotates classes at the service layer
+              - @Repository annotates classes at the persistence layer, which will act as a database repository
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### @ComponentScan & @Autowired
+              > "You are free to use any of the standard Spring Framework techniques to define your beans and their injected dependencies.
+              For simplicity, we often find that using @ComponentScan (to find your beans) and using @Autowired (to do constructor injection) works well."
+
+              [Example](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-spring-beans-and-dependency-injection.html)
+            </script>
           </section>
         </section>
 
@@ -228,10 +342,283 @@
           <!-- Chapter 4 -->
           <section data-markdown>
             <script type="text/template">
-              ## Rest + Postman
+              # 4. REST and Postman
             </script>
           </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## RestController
+              ```java
+              @RestController
+              class RootContoller {
+
+                @RequestMapping("/")
+                String home() {
+                  "Hello World!"
+                }
+
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### REST
+              - Representational State Transfer (REST)
+              - RESTful Web services (RWS)
+              - Provide interoperability between computer systems on the Internet.
+              - Stateless protocol
+              - Standard operations (HTTP)
+              - Other kinds of Web services, such as SOAP Web services, expose their own arbitrary sets of operations.
+            </script>
+            <aside class="notes">
+              By stateless it means that the server does not store any state
+              about the client session on the server side. The client session is
+              stored on the client. The server is stateless means that every
+              server can service any client at any time, there is no session
+              affinity or sticky sessions
+            </aside>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Goals of RESTful Web services
+              * Fast performance - A stateless API is easy to cache.
+              * Reliability - State is always known to the server, because client sends all necessary information with each request.
+              * Scale APIs to millions of concurrent users because any server can handle any request.
+              * Ability to grow by reusing components
+              * Being stateless makes REST APIs less complex (no server-side state synchronization logic)
+              * Components updatable without affecting the system as a whole, even while it is running.
+            </script>
+            <aside class="notes">
+              A specific software can decide whether or not to cache the result
+              of an HTTP request just by looking at that one request. There’s no
+              nagging uncertainty that state from a previous request might
+              affect the cacheability of this one. It improves the performance
+              of applications.
+            </aside>
+          </section>
+          <section
+            data-background-iframe="https://en.wikipedia.org/wiki/Application_programming_interface#Web_APIs"
+          >
+            <div
+              style="position: absolute; width: 80%;  bottom: 9999; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px; font-size: 20px; text-align: left;"
+            >
+              <h3>REST or RESTful is not a standard, but a WebAPI</h3>
+              <ul>
+                <li>Client-Server Architecture</li>
+                <li>Stateless</li>
+                <li>Cacheability</li>
+                <li>Layered System</li>
+                <li>Uniform Interface</li>
+              </ul>
+              <em
+                ><a
+                  href="https://en.wikipedia.org/wiki/Application_programming_interface#Web_APIs"
+                  >https://en.wikipedia.org/wiki/Application_programming_interface#Web_APIs</a
+                ></em
+              >
+            </div>
+          </section>
+          <section
+            data-background-iframe="https://martinfowler.com/articles/richardsonMaturityModel.html"
+          >
+            <div
+              style="position: absolute; width: 60%; right: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px; font-size: 20px; text-align: left;"
+            >
+              <h3>REST Majurity Model by Martin Fowler</h3>
+              <ol start="0">
+                <li>SOAP</li>
+                <li>Resources</li>
+                <li>HTTP Verbs</li>
+                <li>Hypermedia Controls</li>
+              </ol>
+              <em
+                ><a
+                  href="https://martinfowler.com/articles/richardsonMaturityModel.html"
+                  >https://martinfowler.com/articles/richardsonMaturityModel.html</a
+                ></em
+              >
+              <a href="https://tools.ietf.org/html/rfc7231">
+                Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</a
+              >
+            </div>
+            <aside class="notes">
+              <p>
+                Level 1 tackles the question of handling complexity by using
+                divide and conquer, breaking a large service endpoint down into
+                multiple resources.
+              </p>
+              <p>
+                Level 2 introduces a standard set of verbs so that we handle
+                similar situations in the same way, removing unnecessary
+                variation.
+              </p>
+              <p>
+                Level 3 introduces discoverability, providing a way of making a
+                protocol more self-documenting.
+              </p>
+            </aside>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## @Mapping Types
+
+              - @GetMapping
+              - @PostMapping
+              - @PutMapping
+              - @DeleteMapping
+
+              ```java
+              @RequestMapping(value="/api/tasks{id}", method=RequestMethod.PATCH)
+              public @ResponseBody void saveTask(
+                  @PathVariable Long id, @RequestBody Map<Object, Object> fields) {
+              ```
+
+              <a href="https://blog.fullstacktraining.com/restful-api-design-post-vs-put-vs-patch/"> Good Article about Post, Patch, Put</a>
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Spring-Data-Rest
+
+              "The best from REST and data."
+              https://docs.spring.io/spring-data/rest/docs/current/reference/html/#getting-started.boot
+
+              ```
+              @RepositoryRestResource(collectionResourceRel = "order", path = "orders")
+                public interface OrderRepository extends CrudRepository<Order, Long> {
+
+                }
+
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Exercise 2 First use of postman
+
+              - 2.1 Get the Helloworld Result in Postman
+              - 2.2 Create an environment "local" with a varibale host, which points to http://localhost:8080/api
+              - 2.3 Create an environment "local-frontend" with a varibale host, which points to http://localhost:4200/api
+              - 2.4 Import the collection "TODO add Link here".
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Exercise 3 Preparation: Install Lombok:
+
+              ```
+              java -jar lombok.jar install somepath\spring-tool-suite-4-4.3.2.RELEASE-e4.12.0-win32.win32.x86_64\sts-4.3.2.RELEASE
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Exercise 3 Implement the "customer" resource
+              - 3.1 Customer and Address Entity
+              - 3.2 CustomerRepository
+              - 3.3 CustomerExcerpt
+              - 3.4 Optional: make address an extra repository/table
+            </script>
+          </section>
+          <section style=" min-height: 80%!important;">
+            <div data-markdown>
+              <script type="text/template">
+                ### Exercise 3.1 Customer Entity
+                - Fields: long id, String firstName, lastName, Address address (all except id should be required)
+                - Lombok @Data,  @RequiredArgsConstructor, @NonNull
+                - JPA: @Entity, @OneToOne for Address, @NonNull
+                - Jackson: @JsonIgnoreProperties(ignoreUnknown = true)
+              </script>
+            </div>
+            <details><summary>Solution</summary>
+              <div style="position:absolute; top:0px;">
+                <pre><code class="hljs" data-trim data-noescape style=" width:800px; max-height: 600px!important"  >
+                 
+                  @Data
+                  @Entity
+                  @RequiredArgsConstructor
+                  @JsonIgnoreProperties(ignoreUnknown = true)
+                  public class Customer {
+
+                    @Id
+                    @GeneratedValue(strategy = GenerationType.AUTO)
+                    private long id;
+                    @NonNull
+                    @org.springframework.lang.NonNull
+                    private String firstName, lastName;
+                    
+                    @Version
+                    private Long version;
+
+                    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+                    @NonNull
+                    @org.springframework.lang.NonNull
+                    private Address address;
+
+                    Customer() {
+                      this.firstName = null;
+                      this.lastName = null;
+                      this.address = null;
+                      this.version = null;
+                    }
+
+                  }
+                  <button onclick="closeAll()">Close</button>
+                </code></pre>
+              </div>
+            </details>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              #### Exercise 3.2 Create Rest Repository
+
+              ```java
+              @RepositoryRestResource(excerptProjection = CustomerExcerpt.class)
+              public interface CustomerRepository extends CrudRepository<Customer, Long> {
+
+              }
+              ```
+
+              application properties:
+              ```
+              spring.data.rest.basePath=/api
+
+              ```
+            </script>
+          </section>
+          <section style=" min-height: 80%!important;">
+            <h4>Exercise 3.3 CustomerExcerpt</h4>
+            <pre><code class="hljs" data-trim data-noescape >
+              @Projection(name = "detailed", types = Customer.class)
+              public interface CustomerExcerpt {
+
+                String getFirstName();
+
+                String getLastName();
+
+                @Value("#{target.address.toString()}")
+                String getAddress();
+              }
+              </code></pre>
+          </section>
+          <section style=" min-height: 80%!important;">
+            <h4>
+              Exercise 3.4 Optional: make address an extra
+              resource/repository/table
+            </h4>
+            <details
+              ><summary>Solution</summary>
+              <pre><code class="hljs" data-trim data-noescape >
+                @RepositoryRestResource(<mark>exported = false</mark>)
+                public interface AddressRepository extends CrudRepository&lt;Address, Long> {
+
+                }
+                </code></pre>
+            </details>
+          </section>
         </section>
+
         <section>
           <!-- Chapter 5 -->
           <section data-markdown>
