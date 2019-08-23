@@ -825,8 +825,35 @@
           <section data-markdown>
             <script type="text/template">
               ## Spring Data
-              - We already used Spring Data JPA
-              
+              - We already used Spring Data JPA + H2
+              - Lets build a File Upload using Spring Data Redis
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Exercise 5: Implement File Upload
+              ```
+              <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+              </dependency>
+               
+              <dependency>
+                <groupId>it.ozimov</groupId>
+                <artifactId>embedded-redis</artifactId>
+                <version>0.7.2</version>
+                <scope>test</scope>
+              </dependency>
+              ```
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Exercise 5: Redis Config
+              ```
+              spring.redis.host=localhost
+              spring.redis.port=6370
+              ```
             </script>
           </section>
         </section>
@@ -835,6 +862,7 @@
           <section data-markdown>
             <script type="text/template">
               ## Spring Security
+              - 
             </script>
           </section>
         </section>
