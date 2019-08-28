@@ -827,11 +827,30 @@
               ## Spring Data
               - We already used Spring Data JPA + H2
               - Lets build a File Upload using Spring Data Redis
+              - It should be a new maven module
+             
             </script>
           </section>
           <section data-markdown>
             <script type="text/template">
-              ### Exercise 5: Implement File Upload
+              Project Stucture: 
+              * de.coolsafe.api
+               * DemoData
+               * EmbeddedRedisConfiguration
+               * FileApplicationConfig
+               * FileServiceApplication
+              * de.coolsafe.api.file
+               * File
+               * FileController
+               * FileInfo
+               * FileRepository
+               * FileService
+             
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ### Exercise 5: Implement File Upload as a new module
               ```
               <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -856,13 +875,214 @@
               ```
             </script>
           </section>
+          <section style=" min-height: 80%!important;">
+            <div data-markdown>
+              <script type="text/template">
+                ### Exercise 5: 
+              </script>
+            </div>
+            <details
+              ><summary>DemoData</summary>
+              <div style="position:absolute; top:0px;">
+                <pre><code class="hljs" data-trim data-noescape style=" width:800px; max-height: 600px!important"  >
+                package de.coolsafe.api;
+
+
+                import javax.annotation.PostConstruct;
+                
+                import org.springframework.beans.factory.annotation.Autowired;
+                import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+                import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+                import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+                import org.springframework.context.annotation.DependsOn;
+                import org.springframework.context.annotation.Profile;
+                import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+                import org.springframework.data.redis.core.RedisTemplate;
+                import org.springframework.stereotype.Component;
+                
+                import de.coolsafe.api.file.File;
+                import de.coolsafe.api.file.FileRepository;
+                import lombok.extern.slf4j.Slf4j;
+                
+                @Component
+                @Slf4j
+                @ConditionalOnProperty(prefix = "coolsafe", name = "create-demo-data", havingValue = "true")
+                @Profile("local")
+                @DependsOn({ "embeddedRedisConfiguration" })
+                public class DemoData {
+                
+                  @Autowired
+                  FileRepository fileRepository;
+                
+                  public @PostConstruct void init() {
+                
+                    File file = new File("helloWorld", "text", "helloworld".getBytes());
+                    File saved = fileRepository.save(file);
+                
+                    log.info("File created: {}", saved.toString());
+                
+                  }
+                }
+                                  
+                  <button onclick="closeAll()">Close</button>
+                </code></pre>
+              </div>
+            </details>
+            <details
+              ><summary>EmbeddedRedisConfiguration</summary>
+              <div style="position:absolute; top:0px;">
+                <pre><code class="hljs" data-trim data-noescape style=" width:800px; max-height: 600px!important"  >
+                package de.coolsafe.api;
+
+                import javax.annotation.PostConstruct;
+                import javax.annotation.PreDestroy;
+                
+                import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+                import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+                import org.springframework.context.annotation.Configuration;
+                import org.springframework.context.annotation.Profile;
+                
+                import lombok.extern.slf4j.Slf4j;
+                import redis.embedded.RedisServer;
+                
+                @Configuration
+                @Profile("local")
+                @Slf4j
+                @AutoConfigureOrder(value = 0)
+                public class EmbeddedRedisConfiguration {
+                
+                  private RedisServer redisServer;
+                
+                  public EmbeddedRedisConfiguration(RedisProperties redisProperties) {
+                    this.redisServer = new RedisServer(redisProperties.getPort());
+                  }
+                
+                  @PostConstruct
+                  public void postConstruct() {
+                    this.redisServer.start();
+                    log.info("Redis Server started: {}", redisServer.ports());
+                  }
+                
+                  @PreDestroy
+                  public void preDestroy() {
+                    this.redisServer.stop();
+                  }
+                
+                }
+                  <button onclick="closeAll()">Close</button>
+                </code></pre>
+              </div>
+            </details>
+            <details
+              ><summary>FileApplicationConfig</summary>
+              <div style="position:absolute; top:0px;">
+                <pre><code class="hljs" data-trim data-noescape style=" width:800px; max-height: 600px!important"  >
+                  
+@Configuration
+@EnableRedisRepositories
+public class FileApplicationConfig {
+
+	@Bean
+	public LettuceConnectionFactory redisConnectionFactory(RedisProperties redisProperties) {
+		return new LettuceConnectionFactory(
+				new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort()));
+	}
+
+	@Bean
+	@Resource(name = "redisTemplate")
+	public RedisTemplate<?, ?> redisTemplate(LettuceConnectionFactory connectionFactory) {
+		RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
+		template.setConnectionFactory(connectionFactory);
+		return template;
+  }
+}
+                  <button onclick="closeAll()">Close</button>
+                </code></pre>
+              </div>
+            </details>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              #### Exercise 5.1: File Repository
+              #### Exercise 5.2: File Service
+              #### Exercise 5.3: File Controller
+              #### Exercise 5.4: FileInfo Projection              
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              #### Exercise 5.x Unit Test FileRepositoryTest
+              ```
+package de.coolsafe.api.file;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import lombok.extern.slf4j.Slf4j;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = TestRedisConfiguration.class)
+public class FileRepositoryTest {
+
+	@Autowired
+	private FileRepository fileRepository;
+
+	@Test
+	public void shouldSaveFile_toRedis() {
+		File file = new File("helloworld", "text", "helloworld".getBytes());
+		File saved = fileRepository.save(file);
+		assertNotNull(saved);
+		
+		File file1 = fileRepository.findById(saved.getId()).orElseThrow();
+		assertNotNull(file1);
+		
+		assertArrayEquals("helloworld".getBytes(), file1.getData());
+	}
+}
+              ```
+              
+            </script>
+          </section>
         </section>
+        <section data-markdown>
+          <script type="text/template">
+            ### Exercise 6: Implement safe + safeItem
+            - Entity Safe: id, customerId, items, active, activeSince
+            - resource /safes: 
+            - Entity SafeItem: id, price, invoiceId, name
+            - resource /safes/{id}/items: 
+            
+          </script>
+        </section>
+      </section>
         <section>
           <!-- Chapter 7 -->
           <section data-markdown>
             <script type="text/template">
               ## Spring Security
               - 
+            </script>
+          </section>
+        </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Spring Security
+              - 
+            </script>
+          </section>
+        </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Excercise 7 Implement a secure endpoint
+              - Autorization:
+              - Authentication:
+              - Put and Patch safes/{id}/items should be secure
             </script>
           </section>
         </section>
