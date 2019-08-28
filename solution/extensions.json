@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "redhat.java",
+    "vscjava.vscode-maven",
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-spring-boot-dashboard",
+    "pivotal.vscode-boot-dev-pack",
+    "pivotal.vscode-spring-boot",
+    "ecmel.vscode-spring-boot",
+    "vscjava.vscode-spring-initializr",
+    "gabrielbb.vscode-lombok"
+
+  ],
+  "unwantedRecommendations": []
+}
