@@ -190,7 +190,30 @@
           </section>
           <section data-markdown>
             <script type="text/template">
-              ## 1.4 Import project to VS-Code
+              ### 1.4 Import project to VS-Code
+
+              - create .vscode/extensions.json in your workspace
+              - then install all the extensions
+
+              ```
+              {
+                "recommendations": [
+                  "redhat.java",
+                  "vscjava.vscode-maven",
+                  "vscjava.vscode-java-pack",
+                  "vscjava.vscode-spring-boot-dashboard",
+                  "pivotal.vscode-boot-dev-pack",
+                  "pivotal.vscode-spring-boot",
+                  "ecmel.vscode-spring-boot",
+                  "vscjava.vscode-spring-initializr",
+                  "gabrielbb.vscode-lombok"
+              
+                ],
+                "unwantedRecommendations": []
+              }
+              
+              ```
+
             </script>
           </section>
           <section data-markdown>
