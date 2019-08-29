@@ -4,9 +4,4 @@
 ## Slides:
 
 [Slides](slides)
- 
-## Excercises: 
- 
-Exercises: [Excercises](exercises)
-
 
