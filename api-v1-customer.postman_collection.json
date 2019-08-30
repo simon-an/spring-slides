@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "8613e0b9-4ad2-43a7-b92c-9feef0ad77b4",
+		"name": "api-v1-customer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "querryAPI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}",
+					"host": [
+						"{{host}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllCustomers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/customers",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createCustomer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"Simon\",\n\t\"lastName\" : \"MyOtherName\",\n\t\"address\" : {\n\t\t\"street\": \"MyStreet\",\n\t\t\"city\" : \"MyCity\",\n\t\t\"zipCode\" : \"12345\",\n\t\t\"state\": \"Bay\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "{{host}}/customers",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "changeCustomerAddress",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"address\": {\r\n    \t\"street\": \"MovedToThisStreet\"\r\n\t},\r\n\t\"lastName\": \"bla\"\r\n\t\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/customers/2",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"customers",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "replaceCustomer",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"Simon2\",\n\t\"lastName\" : \"MyOtherName2\",\n\t\"address\" : {\n\t\t\"street\": \"MyStreet2\",\n\t\t\"city\" : \"MyCity2\",\n\t\t\"zipCode\" : \"12345\",\n\t\t\"state\": \"Bay\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "{{host}}/customers/1244124",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"customers",
+						"1244124"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
